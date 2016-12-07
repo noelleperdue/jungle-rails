@@ -5,7 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 puts "Seeding Data ..."
 
 # Helper functions
@@ -25,52 +24,6 @@ puts "Finding or Creating Categories ..."
 cat1 = Category.find_or_create_by! name: 'Apparel'
 cat2 = Category.find_or_create_by! name: 'Electronics'
 cat3 = Category.find_or_create_by! name: 'Furniture'
-
-## REVIEWS
-
-puts "Creating Reviews ..."
-
-Review.create!(
-  product_id: 1,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-)
-
-Review.create!({
-  product_id: 1,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-})
-
-Review.create!({
-  product_id: 2,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-})
-
-Review.create!({
-  product_id: 3,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-})
-
-Review.create!({
-  product_id: 3,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-})
-
-Review.create!({
-  product_id: 4,
-  user_id: 1,
-  description: Faker::Hacker.say_something_smart,
-  rating: 3,
-})
 
 ## PRODUCTS
 
@@ -98,7 +51,7 @@ cat1.products.create!({
   name:  'Hipster Hat',
   description: Faker::Hipster.paragraph(4),
   image: open_asset('apparel3.jpg'),
-  quantity: 0,
+  quantity: 4,
   price: 34.49
 })
 
@@ -171,9 +124,13 @@ cat3.products.create!({
   name:  'Red Bookshelf',
   description: Faker::Hipster.paragraph(4),
   image: open_asset('furniture3.jpg'),
-  quantity: 23,
+  quantity: 0,
   price: 2_483.75
 })
+
+
+
+
 
 
 puts "DONE!"

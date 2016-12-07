@@ -1,21 +1,28 @@
 class ReviewsController < ApplicationController
 
-  before_action :authorize
+  before_action :require_login
 
-  def create
-    @review = Review.new(description: params[:review][:description],
-      rating: params[:review][:rating],
-      user_id: session[:user_id],
-      product_id: params[:product_id])
+ def create
+     @product = Product.find(params[:product_id].to_i)
+     @review = @product.reviews.new(description: params[:review][:description],
+       rating: params[:review][:rating])
+     @review.user_id = current_user.id
+     @review.save
+     redirect_to product_path(@product)
+   end
 
-    @review.user = current_user
-      @review.save
-      redirect_to product_path (params[:product_id])
-  end
+   def destroy
+     @review = Review.find params[:id]
+     @review.destroy
+     redirect_to product_path(params[:product_id])
+   end
 
-  def destroy
-    @review = Review.find params[:id]
-    @review.destroy
-    redirect_to product_path(params[:product_id])
-  end
-end
+   private
+
+   def require_login
+     unless current_user
+       flash[:error] = "please log in"
+     end
+   end
+
+ end

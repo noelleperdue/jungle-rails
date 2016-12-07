@@ -13,7 +13,7 @@
       <%= fa_icon "shopping-cart", text: 'Add' %>
     <% end %>
     <%= link_to product, class: 'btn btn-default pull-right' do %>
-      Details &raquo;
+      Details
     <% end %>
   </footer>
 
@@ -21,11 +21,11 @@
     <%= humanized_money_with_symbol product.price %>
   </aside>
 
-<% if product.quantity == 0 %>
-  <aside class="sold-out">
-    <p>Sold Out!</p>
-  </aside>
-<% end %>
 
+  <% if product.quantity == 0 %>
+     <aside class="soldout">
+      Sold out!
+     </aside>
+  <% end %>
 
 </article>

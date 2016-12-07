@@ -2,50 +2,76 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  context 'Validations' do
+  context "Validations" do
 
-  it "is valid with all properties" do
-    @user = User.create(name: 'Amy', email: 'amypound23@gmail.com' , password: 'cupcake1', password_confirmation: 'cupcake1')
-    @user.validate!
-    @user.errors.full_messages
-  end
-
-  it "is not valid with different passwords" do
-    @user = User.create(name: 'Butters', email: 'butters@carrots.com', password: 'cupcake1', password_confirmation: 'cupcake2')
-    expect(@user).to_not be_valid
-    expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
-  end
-
-    it "is not valid with no name" do
-      @user = User.create(name: nil, email: 'butters@carrots.com', password: 'cupcake1', password_confirmation: 'cupcake1')
-      expect(@user).to_not be_valid
-      expect(@user.errors.full_messages).to include("Name can't be blank")
-    end
-
-    it "is not valid with no email" do
-      @user = User.create(name: "Butters", email: nil, password: 'cupcake1', password_confirmation: 'cupcake1')
-      expect(@user).to_not be_valid
-      expect(@user.errors.full_messages).to include("Email can't be blank")
-    end
-
-    it "is not valid if password is too short" do
-      @user = User.create(name: "Butters", email: 'butters@carrots.com', password: 'cups', password_confirmation: 'cups')
-      expect(@user).to_not be_valid
-      expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
-    end
-
-    it "is not valid if email is not unique" do
-      @user = User.create(name: "Butters", email: 'butters@carrots.com', password: 'cupcake1', password_confirmation: 'cupcake1')
-      @user2 = User.create(name: "Butters", email: 'buTTers@caRRots.com', password: 'cupcake1', password_confirmation: 'cupcake1')
-      expect(@user2.errors.full_messages).to include("Email has already been taken")
-    end
-
-    context '.authenticate_with_credentials' do
-
-    it "is valid if user has space before email" do
-      @user = User.create(name: "Butters", email: '  butters@carrots.com', password: 'cupcake1', password_confirmation: 'cupcake1')
+    it "has all valid properties " do
+      @user = User.create(firstname:"Noelle", lastname: "Perdue", email: "perdue.noelle@gmail.com",
+                          password:"elleon", password_confirmation: "elleon")
       @user.validate!
+      @user.errors.full_messages
+    end
+
+    it "must have a firstname" do
+      @user = User.create(firstname: nil, lastname: "Perdue", email: "perdue.noelle@gmail.com",
+                          password:"elleon", password_confirmation: "elleon")
+
+         expect(@user).to_not be_valid
+         expect(@user.errors.full_messages).to include("please enter first name")
+    end
+
+    it "must have last name" do
+      @user = User.create(firstname:"Noelle", lastname: nil, email: "perdue.noelle@gmail.com",
+                          password:"elleon", password_confirmation: "elleon")
+
+         expect(@user).to_not be_valid
+         expect(@user.errors.full_messages).to include("Please enter last name")
+    end
+
+     it "must have a email" do
+        @user = User.create(firstname:"Noelle", lastname: "Perdue", email: nil,
+                          password:"elleon", password_confirmation: "elleon")
+         expect(@user).to_not be_valid
+         expect(@user.errors.full_messages).to include("please fill in email field")
+     end
+
+      it "must have unique email" do
+
+        @user1 = User.create(firstname:"Noelle", lastname: "Perdue", email: "perdue.noelle@gmail.com",
+                          password:"elleon", password_confirmation: "elleon")
+        @user2 = User.create(firstname:"Steven", lastname: "Conway", email: "perdue.noelle@gmail.com",
+                          password:"elleon", password_confirmation: "elleon")
+
+        expect(@user2.errors.messages[:email]).to eq ["We already have a registered user with that email"]
+      end
+
+      it "must have a password" do
+
+         @user = User.create(firstname:"Noelle", lastname: "Perdue", email: "perdue.noelle@gmail.com",
+                          password: nil, password_confirmation: "elleon")
+
+         expect(@user).to_not be_valid
+         expect(@user.errors.full_messages).to include("Password can't be blank")
+      end
+
+     it "must have a password confirmation" do
+
+         @user = User.create(firstname:"Noelle", lastname: "Perdue", email:"perdue.noelle@gmail.com" ,
+                          password:"elleon", password_confirmation: nil)
+
+         expect(@user).to_not be_valid
+         expect(@user.errors.full_messages).to include("Password confirmation can't be blank")
     end
   end
+  describe '.authenticate_with_credentials' do
+
+
+    it "must have email to sign in" do
+      @user_register = User.create(firstname:"Noelle", lastname: "Perdue", email:"perdue.noelle@gmail.com" ,
+                          password:"elleon", password_confirmation: "elleon")
+
+      @user_signin = User.authenticate_with_credentials("perdue.noelle@gmail.com","elleon")
+
+      expect(@user_register).to eq(@user_signin)
+    end
   end
 end

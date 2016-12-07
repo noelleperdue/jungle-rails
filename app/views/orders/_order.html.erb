@@ -1,0 +1,22 @@
+<% @order_total += (product.total_price_cents / 100.00) %>
+<tr>
+   <td>
+     <%= image_tag product.image.tiny %>
+   </td>
+   <td>
+     <%= product.name %>
+   </td>
+   <td>
+     <%= product.description %>
+   </td>
+   <td>
+       <%= product.quantity %>
+
+   </td>
+   <td>
+      $<%= product.item_price_cents / 100.00 %>
+   </td>
+   <td>
+    $<%= product.total_price_cents / 100.00 %>
+   </td>
+</tr>

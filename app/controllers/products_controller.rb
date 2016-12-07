@@ -1,4 +1,3 @@
-
 class ProductsController < ApplicationController
 
   def index
@@ -7,7 +6,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find params[:id]
-    @reviews = Review.where(product_id: params[:id])
+    @review = Review.new
   end
 
 end

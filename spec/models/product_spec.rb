@@ -2,41 +2,46 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
 
-  context 'Validations' do
+  before do
+      @category = Category.create(name: "chairs")
+  end
 
-    it "is valid with all attributes" do
-      @category = Category.create(name: 'VHS Tapes')
-      @product = Product.create(name: 'Pulp Fiction', price_cents: 299 , quantity: 5, category_id: @category.id)
+  context "Validations" do
+
+
+    it "has all valid properties " do
+      @product = Product.create(name:"Big Chair", price: 1,
+                                quantity: 1, category: @category)
       @product.validate!
       @product.errors.full_messages
     end
 
-    it "is not valid without name" do
-      @category = Category.create(name: 'VHS Tapes')
-      @product = Product.create(name: nil, price_cents: 299, quantity: 3, category_id: @category.id)
-      expect(@product).to_not be_valid
-      @product.errors.full_messages
+    it "must have a name" do
+         @product = Product.create(name: nil, price: 1,
+                                quantity: 1, category: @category)
+         expect(@product).to_not be_valid
+         expect(@product.errors.full_messages).to include("Name can't be blank")
     end
 
-    it "is not valid without price" do
-      @category = Category.create(name: 'VHS Tapes')
-      @product = Product.create(name: 'Titanic', price_cents: nil, quantity: 5, category_id: @category.id)
-      expect(@product).to_not be_valid
-      @product.errors.full_messages
+    it "must have price" do
+         @product = Product.create(name: "Big Chair", price: nil,
+                                quantity: 1, category: @category)
+         expect(@product).to_not be_valid
+         expect(@product.errors.full_messages).to include("Price can't be blank")
     end
 
-    it "is not valid without quantity" do
-      @category = Category.create(name: 'VHS Tapes')
-      @product = Product.create(name: 'Home Alone', price_cents: 299, quantity: nil, category_id: @category.id)
-      expect(@product).to_not be_valid
-      @product.errors.full_messages
+     it "must have a quantity" do
+         @product = Product.create(name: "Big Chair", price: 1,
+                                quantity: nil, category: @category)
+         expect(@product).to_not be_valid
+         expect(@product.errors.full_messages).to include("Quantity can't be blank")
     end
 
-    it "is not valid without category" do
-      @category = Category.create(name: 'VHS Tapes')
-      @product = Product.create(name: 'Jurassic Park', price_cents: 299, quantity: 2, category_id: nil)
-      expect(@product).to_not be_valid
-      @product.errors.full_messages
+      it "must have a category" do
+         @product = Product.create(name: "Big Chair", price: 1,
+                                quantity: 1, category: nil)
+         expect(@product).to_not be_valid
+         expect(@product.errors.full_messages).to include("Category can't be blank")
     end
   end
 end

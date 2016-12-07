@@ -36,6 +36,12 @@ gem 'rmagick'
 gem 'stripe'
 gem 'faker'
 
+
+group :test do
+  gem 'capybara'
+  gem 'poltergeist'
+  gem 'database_cleaner'
+end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -44,14 +50,10 @@ group :development, :test do
   gem 'byebug'
   gem 'quiet_assets'
   gem 'dotenv-rails'
+  gem "letter_opener", :group => :development
   gem 'rspec-rails', '~> 3.5'
 end
 
-group :test do
-  gem 'capybara'
-  gem 'poltergeist'
-  gem 'database_cleaner'
-end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
